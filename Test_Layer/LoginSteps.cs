@@ -19,10 +19,16 @@ public class LoginSteps
         loginPage.NavigateToUrl("https://www.saucedemo.com/");
     }
 
-    [When("I enter username '(.*)' and password '(.*)'")]
-    public void WhenIEnterUsernameAndPassword(string username, string password)
+    [When("I enter valid username and password")]
+    public void WhenIEnterUsernameAndPassword()
     {
-        loginPage.EnterCredentials(username, password);
+        loginPage.EnterCredentials("standard_user", "secret_sauce");
+    }
+
+    [When("I enter invalid username and password")]
+    public void WhenIEnterInvalidUsernameAndPassword()
+    {
+        loginPage.EnterCredentials("invalid_user", "invalid_password");
     }
 
     [When("I click on the login button")]
@@ -37,9 +43,9 @@ public class LoginSteps
         Assert.IsTrue(loginPage.IsOnProductsPage());
     }
 
-    [Then("I should see an error message indicating (.*)")]
-    public void ThenIShouldSeeAnErrorMessageIndicating(string message)
+    [Then("I should see an error message indicating 'invalid credentials'")]
+    public void ThenIShouldSeeAnErrorMessageIndicatingInvalidCredentials()
     {
-        Assert.AreEqual(message, loginPage.GetErrorMessage());
+        Assert.AreEqual("invalid credentials", loginPage.GetErrorMessage());
     }
 }
